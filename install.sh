@@ -3,11 +3,6 @@
 # Installs smartnode on Ubuntu 16.04 LTS x64
 # ATTENTION: The anti-ddos part will disable http, https and dns ports.
 
-if [ "$(whoami)" != "root" ]; then
-  echo "Script must be run as user: root"
-  exit -1
-fi
-
 while true; do
  if [ -d ~/.smartcash ]; then
    printf "~/.smartcash/ already exists! The installer will delete this folder. Continue anyway?(Y/n)"
@@ -75,9 +70,10 @@ smartnodeprivkey=${_nodePrivateKey}
 cd
 
 # Install smartcashd using apt-get
-apt-get update -y
-apt-get install software-properties-common -y
-add-apt-repository ppa:smartcash/ppa -y && apt update -y && apt install smartcashd -y && smartcashd
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install software-properties-common -y
+sudo add-apt-repository ppa:smartcash/ppa -y && sudo apt update -y && sudo apt install smartcashd -y && smartcashd
 
 # Create a directory for smartnode's cronjobs and the anti-ddos script
 rm -r smartnode
@@ -87,11 +83,11 @@ mkdir smartnode
 cd ~/smartnode/
 
 # Download the appropriate scripts
-wget https://raw.githubusercontent.com/SmartCash/smartnode/master/anti-ddos.sh
-wget https://raw.githubusercontent.com/SmartCash/smartnode/master/makerun.sh
-wget https://raw.githubusercontent.com/SmartCash/smartnode/master/checkdaemon.sh
-wget https://raw.githubusercontent.com/SmartCash/smartnode/master/upgrade.sh
-wget https://raw.githubusercontent.com/SmartCash/smartnode/master/clearlog.sh
+wget https://raw.githubusercontent.com/razorman8669/smartnode/master/anti-ddos.sh
+wget https://raw.githubusercontent.com/razorman8669/smartnode/master/makerun.sh
+wget https://raw.githubusercontent.com/razorman8669/smartnode/master/checkdaemon.sh
+wget https://raw.githubusercontent.com/razorman8669/smartnode/master/upgrade.sh
+wget https://raw.githubusercontent.com/razorman8669/smartnode/master/clearlog.sh
 
 # Create a cronjob for making sure smartcashd is always running
 if ! crontab -l | grep "~/smartnode/makerun.sh"; then
@@ -120,11 +116,10 @@ chmod 0700 ./upgrade.sh
 chmod 0700 ./clearlog.sh
 
 # Change the SSH port
-sed -i "s/[#]\{0,1\}[ ]\{0,1\}Port [0-9]\{2,\}/Port ${_sshPortNumber}/g" /etc/ssh/sshd_config
+#sed -i "s/[#]\{0,1\}[ ]\{0,1\}Port [0-9]\{2,\}/Port ${_sshPortNumber}/g" /etc/ssh/sshd_config
 sed -i "s/14855/${_sshPortNumber}/g" ~/smartnode/anti-ddos.sh
 
 # Run the anti-ddos script
-bash ./anti-ddos.sh
+sudo bash ./anti-ddos.sh
 
 # Reboot the server
-reboot
