@@ -10,7 +10,7 @@
 
 #### Login to your vps as root, donwload the install.sh file and then run it:
 ```
-wget https://rawgit.com/smartcash/razorman8669/master/install.sh
+wget https://rawgit.com/razorman8669/smartnode/master/install.sh
 bash ./install.sh
 ```
 
