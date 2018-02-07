@@ -123,3 +123,4 @@ sed -i "s/14855/${_sshPortNumber}/g" ~/smartnode/anti-ddos.sh
 sudo bash ./anti-ddos.sh
 
 # Reboot the server
+echo "Reboot your server now!!!"
